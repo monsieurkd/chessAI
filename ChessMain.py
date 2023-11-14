@@ -16,7 +16,7 @@ def loadImages():
     pieces = ["wp", "wR", "wN", "wB", "wK",
               'wQ', 'bp', 'bR', 'bN', 'bB', 'bK', 'bQ']
     for piece in pieces:
-        IMAGES[piece] = p.image.load("Chess/images/" + piece + ".png")
+        IMAGES[piece] = p.image.load("images/" + piece + ".png")
 
 # main driver
 
@@ -29,10 +29,40 @@ def main():
     gs = ce.GameState()
     loadImages()  # once before the game begin
     running = True
+
+    sqSelected = ()
+    tempClick = []
+
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+            elif e.type == p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos()
+                col = location[0]//SQ_SIZE
+                row = location[1]//SQ_SIZE
+                if sqSelected == (row, col) :#check if click the same square twice
+                    sqSelected = ()
+                    tempClick = []
+                else: #add the move
+                    sqSelected = (row, col)
+                    tempClick.append(sqSelected)
+                
+                if len(tempClick) == 2: #make a move, have start and end position
+                    row, col = tempClick[0]
+                    print("Start position:", row, col)
+
+                    row, col = tempClick[1]
+                    print("End position:", row, col)
+                    # make move
+                    move = ce.Move(tempClick[0], tempClick[1], gs.board)
+                    print(tempClick)
+                    print(move.getNotation())
+                    gs.makeMove(move)
+                    sqSelected = ()
+                    tempClick = []
+                    
+                
 
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
