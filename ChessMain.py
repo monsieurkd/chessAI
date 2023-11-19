@@ -27,6 +27,8 @@ def main():
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gs = ce.GameState()
+    validMove = gs.getValidMoves()
+    moveMade = False
     loadImages()  # once before the game begin
     running = True
 
@@ -58,12 +60,25 @@ def main():
                     move = ce.Move(tempClick[0], tempClick[1], gs.board)
                     print(tempClick)
                     print(move.getNotation())
-                    gs.makeMove(move)
+                    if move in validMove:
+                        gs.makeMove(move)
+                        moveMade = True
+                    
                     sqSelected = ()
                     tempClick = []
-                    
-                
+       
 
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z: #when press 'z'
+                    gs.UndoMove()
+                    moveMade = True
+
+        if moveMade:
+            gs.getValidMoves()
+            moveMade = False
+                    
+            
+            
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
