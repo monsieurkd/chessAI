@@ -28,6 +28,7 @@ def main():
     screen.fill(p.Color("white"))
     gs = ce.GameState()
     validMove = gs.getValidMoves()
+  
     moveMade = False
     loadImages()  # once before the game begin
     running = True
@@ -60,12 +61,15 @@ def main():
                     move = ce.Move(tempClick[0], tempClick[1], gs.board)
                     print(tempClick)
                     print(move.getNotation())
-                    if move in validMove:
-                        gs.makeMove(move)
-                        moveMade = True
-                    
-                    sqSelected = ()
-                    tempClick = []
+                    for i in range(len(validMove)):
+                        if move == validMove[i]:
+                            gs.makeMove(validMove[i])
+                            moveMade = True
+                            sqSelected = ()
+                            tempClick = []
+                        
+                    if not moveMade:
+                        tempClick = [sqSelected]
        
 
             elif e.type == p.KEYDOWN:
@@ -74,7 +78,7 @@ def main():
                     moveMade = True
 
         if moveMade:
-            gs.getValidMoves()
+            validMove = gs.getValidMoves()
             moveMade = False
                     
             
