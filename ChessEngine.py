@@ -76,6 +76,9 @@ class GameState():
             self.staleMate = False
         
         return moves
+    
+    def blankFuc(self):
+        pass
 
     
 
